@@ -12,7 +12,7 @@ class Palette:
 		self.num = num
 		self.alpha = alpha
 		self.palette_name = palette_name
-		self.colors = None
+		self.colors = []
 
 
 		try:
@@ -24,8 +24,12 @@ class Palette:
 		else:
 			norm = matplotlib.colors.Normalize(vmin=0, vmax=self.num)
 
-			self.colors = [cmap(norm(value), alpha = self.alpha) for value in range(0,self.num)]
-
+			aux = [cmap(norm(value), alpha = self.alpha) for value in range(0,self.num)]
+            
+            # arredondar cada codigo RGBA com 3 casas decimais
+			for item in aux:
+				self.colors.append([ round(v,3) for v in item ])
+				
 	
 	def get_colors(self):
 		if self.colors != None:
@@ -40,7 +44,7 @@ class Palette:
 
 	def graph(self):
 		if self.colors != None:
-			fig, ax = plt.subplots(figsize=(14,7));
+			fig, ax = plt.subplots(figsize=(14,8));
 			plt.imshow([self.colors]);
 
 			ax.spines['right'].set_visible(False)
